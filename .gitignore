@@ -1,0 +1,127 @@
+# ==========================================
+# Dependencies - Thư viện đã cài đặt
+# ==========================================
+# Không push vì: Dung lượng lớn, có thể cài lại bằng npm/pnpm install
+node_modules/
+.pnpm-store/
+.yarn/
+.npm/
+.next/
+.nuxt/
+dist/
+
+# ==========================================
+# Environment Variables - Biến môi trường
+# ==========================================
+# Không push vì: Chứa thông tin nhạy cảm (DB password, API keys, secrets)
+.env                      # File cấu hình môi trường chính (chứa DATABASE_URL, secrets)
+.env.local               # File env cho local development
+.env.*.local             # File env theo môi trường (dev, staging, prod)
+*.env                    # Tất cả file .env khác
+
+# ==========================================
+# Build Outputs - Kết quả build
+# ==========================================
+# Không push vì: Tự động tạo khi build, không cần version control
+dist/                    # Thư mục output của build process
+build/                   # Thư mục build tổng quát
+.next/                   # Build cache và output của Next.js
+.nuxt/                   # Build cache và output của Nuxt
+.output/                 # Output folder của Nuxt 3
+.vercel/                 # Build artifacts của Vercel
+out/                     # Export static của Next.js
+
+# ==========================================
+# Cache & Logs - File tạm và logs
+# ==========================================
+# Không push vì: File tạm, logs không cần thiết, tự động tạo lại
+.cache/                  # Cache folder chung
+.temp/                   # Temporary files
+*.log                    # Tất cả log files
+*.log.*                  # Log files có timestamp
+npm-debug.log*           # Log lỗi của npm
+yarn-debug.log*          # Log lỗi của yarn
+yarn-error.log*          # Error logs của yarn
+pnpm-debug.log*          # Log lỗi của pnpm
+lerna-debug.log*         # Log lỗi của lerna (monorepo tool)
+
+# ==========================================
+# IDE & Editor - Cài đặt IDE cá nhân
+# ==========================================
+# Không push vì: Cấu hình cá nhân, mỗi dev có settings riêng
+.vscode/*                # Tất cả settings của VS Code
+!.vscode/extensions.json # Ngoại trừ: danh sách extensions khuyên dùng
+!.vscode/settings.json   # Ngoại trừ: settings chung cho project
+!.vscode/tasks.json      # Ngoại trừ: tasks automation
+!.vscode/launch.json     # Ngoại trừ: debug configurations
+.idea/                   # Settings của IntelliJ IDEA / WebStorm
+*.suo                    # Visual Studio user options
+*.ntvs*                  # Node.js tools for Visual Studio
+*.njsproj               # Node.js project file
+*.sln                   # Visual Studio solution file
+*.sw?                   # Vim swap files
+.DS_Store               # macOS folder metadata
+Thumbs.db               # Windows thumbnail cache
+
+# ==========================================
+# Testing - Kết quả test coverage
+# ==========================================
+# Không push vì: Tự động tạo khi chạy test, không cần tracking
+coverage/               # Test coverage reports
+.nyc_output/           # NYC (Istanbul) coverage output
+*.lcov                 # LCOV coverage format
+
+# ==========================================
+# Database - File database local
+# ==========================================
+# Không push vì: Database development local, mỗi dev có data riêng
+*.db                   # SQLite database files
+*.db-journal          # SQLite journal files
+*.sqlite              # SQLite database
+*.sqlite3             # SQLite3 database
+dev.db                # Development database
+dev.db-journal        # Development DB journal
+
+# ==========================================
+# Prisma - ORM database files
+# ==========================================
+# Không push vì: Local DB và generated files
+prisma/.env                                              # Env riêng cho Prisma
+prisma/*.db                                              # Database files trong prisma folder
+prisma/*.db-journal                                      # DB journal files
+apps/backend-next/prisma/migrations/*_migration/        # Migration cũ (chỉ giữ latest)
+!apps/backend-next/prisma/migrations/migration_lock.toml # Ngoại trừ: file lock migrations
+
+# ==========================================
+# Operating System - File hệ điều hành
+# ==========================================
+# Không push vì: Metadata của OS, không liên quan code
+.DS_Store              # macOS folder settings
+.DS_Store?             # macOS backup
+._*                    # macOS resource forks
+.Spotlight-V100        # macOS Spotlight index
+.Trashes               # macOS trash metadata
+ehthumbs.db           # Windows thumbnail cache
+Desktop.ini           # Windows folder config
+
+# ==========================================
+# TypeScript - Build info
+# ==========================================
+# Không push vì: Cache của TypeScript compiler, tự động tạo lại
+*.tsbuildinfo         # TypeScript incremental compilation cache
+next-env.d.ts         # Next.js auto-generated TypeScript definitions
+
+# ==========================================
+# Miscellaneous - Khác
+# ==========================================
+# Không push vì: Cache, certificates, temporary files
+.turbo/               # Turborepo cache
+*.pem                 # SSL certificates / private keys
+.certifications/      # Certificate files
+
+# ==========================================
+# Local Development Files - File test cá nhân
+# ==========================================
+# Không push vì: File test/demo cá nhân, không phải code chính thức
+Test.ts               # File test của bạn
+*.test.local.*        # Các file test local
