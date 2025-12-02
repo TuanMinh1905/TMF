@@ -1,9 +1,9 @@
 <template>
-  <!-- <NuxtLink :to="{ name: 'p-id', params: { id: product.alias } }"> -->
-  <NuxtLink :to="localePath(`/p/${product.alias}`)">
-    <div
-      class="hover-effect mb-[0px] mb-[10px] flex break-inside-avoid flex-col justify-between rounded-[6px] border-[1px] bg-white lg:mt-[0px] lg:h-[365px] lg:max-w-[220px] lg:rounded-[14px] lg:border-[#D8DCE0]"
-    >
+  <div
+    class="hover-effect mb-[0px] mb-[10px] flex break-inside-avoid flex-col justify-between rounded-[6px] border-[1px] bg-white lg:mt-[0px] lg:h-[400px] lg:max-w-[220px] lg:rounded-[14px] lg:border-[#D8DCE0]"
+  >
+    <!-- Link to product detail -->
+    <NuxtLink :to="localePath(`/p/${product.alias}`)">
       <div class="flexRow-center relative overflow-hidden lg:rounded-t-[14px]">
         <img
           :src="product.images"
@@ -18,8 +18,7 @@
           {{ (100 - (product.price / product.compare_at_price) * 100).toFixed(1) }}%
         </span>
       </div>
-      <div class="relative px-2 pb-3">
-        <!-- <BarnerProduct class="absolute top-[-25px]" /> -->
+      <div class="relative px-2 pb-2">
         <h2
           class="text-md w-full font-normal leading-[20px]"
           style="
@@ -97,25 +96,69 @@
             />
           </svg>
         </div>
-        <div class="flexRow-between mt-4">
+        <div class="flexRow-between mt-2">
           <p class="rounded-[4px] text-xl font-bold text-textProduct">
             {{ formatVNDWithComma(product.price) }}
             <span class="text-sm">đ</span>
           </p>
         </div>
       </div>
+    </NuxtLink>
+    
+    <!-- Nút thêm vào giỏ hàng -->
+    <div class="px-2 pb-3">
+      <button
+        class="w-full flex items-center justify-center gap-2 py-2 bg-primary hover:bg-yellow-500 text-gray-800 font-medium rounded-lg transition-all text-sm"
+        :disabled="loading"
+        @click="handleAddToCart"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <span v-if="loading">Đang thêm...</span>
+        <span v-else>Thêm vào giỏ</span>
+      </button>
     </div>
-  </NuxtLink>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { useCartStore } from '~/store/cart'
+import { useAuthStore } from '~/store/auth'
+
 const props = defineProps({
   product: {
     type: Object,
     required: true,
   },
 })
+
 const localePath = useLocalePath()
+const cartStore = useCartStore()
+const authStore = useAuthStore()
+const router = useRouter()
+
+const loading = ref(false)
+
+async function handleAddToCart() {
+  // Kiểm tra đăng nhập
+  if (!authStore.isLoggedIn) {
+    // Redirect đến trang login
+    router.push('/login')
+    return
+  }
+
+  loading.value = true
+  const result = await cartStore.addToCart(props.product.id)
+  loading.value = false
+
+  if (result.success) {
+    // Có thể show toast notification ở đây
+    console.log('Đã thêm vào giỏ hàng!')
+  } else {
+    alert(result.error || 'Lỗi thêm vào giỏ hàng')
+  }
+}
 </script>
 
 <style scoped>

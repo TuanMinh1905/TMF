@@ -68,6 +68,38 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    // Register
+    async register(email: string, password: string, fullName?: string, phone?: string) {
+      this.loading = true
+      this.error = null
+
+      try {
+        const response = await clientAPI().post('/auth/register', { 
+          email, 
+          password, 
+          fullName,
+          phone 
+        })
+        const { accessToken, user } = response.data
+
+        this.accessToken = accessToken
+        this.user = user
+
+        // Lưu vào localStorage
+        if (import.meta.client) {
+          localStorage.setItem('accessToken', accessToken)
+        }
+
+        return { success: true, user }
+      } catch (err: any) {
+        const message = err.response?.data?.error || 'Đăng ký thất bại'
+        this.error = message
+        return { success: false, error: message }
+      } finally {
+        this.loading = false
+      }
+    },
+
     // Lấy thông tin user hiện tại từ token
     async fetchMe() {
       if (!this.accessToken) return null

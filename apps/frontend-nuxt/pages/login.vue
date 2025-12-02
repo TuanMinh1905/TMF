@@ -68,6 +68,16 @@
         </NuxtLink>
       </div>
 
+      <!-- Register Link -->
+      <div class="mt-4 text-center">
+        <p class="text-gray-600 text-sm">
+          Chưa có tài khoản?
+          <NuxtLink to="/register" class="text-blue-600 hover:underline font-medium">
+            Đăng ký ngay
+          </NuxtLink>
+        </p>
+      </div>
+
       <!-- Demo Credentials (dev only) -->
       <div class="mt-8 p-4 bg-gray-50 rounded-lg text-sm text-gray-600">
         <p class="font-medium mb-2">Tài khoản demo:</p>
