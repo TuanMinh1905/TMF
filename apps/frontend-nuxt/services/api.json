@@ -1,0 +1,733 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "PEPE",
+        "description": "PEPE API",
+        "version": "1.0.0"
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {}
+    },
+    "servers": [
+        {
+            "url": "http://localhost:4200",
+            "description": "Dev server"
+        }
+    ],
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "paths": {
+        "/api/banners": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "src": {
+                                            "type": "string"
+                                        },
+                                        "link": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "src",
+                                        "link"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "getApiBanners",
+                "tags": [
+                    "Banners"
+                ],
+                "parameters": [],
+                "description": "Get banners"
+            }
+        },
+        "/api/brands": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "country": {
+                                            "type": "string"
+                                        },
+                                        "src": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "country",
+                                        "src"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "getApiBrands",
+                "tags": [
+                    "Brands"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "number",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "type": "number",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sort",
+                        "schema": {
+                            "type": "string",
+                            "default": "name asc"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "description": "Get brands"
+            }
+        },
+        "/api/products": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "grams": {
+                                                        "type": "number"
+                                                    },
+                                                    "barcode": {
+                                                        "type": "string"
+                                                    },
+                                                    "compare_at_price": {
+                                                        "type": "string"
+                                                    },
+                                                    "inventory_management": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "",
+                                                            "bizweb"
+                                                        ]
+                                                    },
+                                                    "inventory_policy": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "deny",
+                                                            "continue"
+                                                        ]
+                                                    },
+                                                    "inventory_quantity": {
+                                                        "type": "number"
+                                                    },
+                                                    "inventory_quantity_adjustment": {
+                                                        "type": "number"
+                                                    },
+                                                    "metafield": {
+                                                        "type": "string"
+                                                    },
+                                                    "option": {
+                                                        "type": "string"
+                                                    },
+                                                    "position": {
+                                                        "type": "number"
+                                                    },
+                                                    "price": {
+                                                        "type": "string"
+                                                    },
+                                                    "product_id": {
+                                                        "type": "number"
+                                                    },
+                                                    "requires_shipping": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "sku": {
+                                                        "type": "string"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    },
+                                                    "weight": {
+                                                        "type": "number"
+                                                    },
+                                                    "weight_unit": {
+                                                        "type": "string"
+                                                    },
+                                                    "image_id": {
+                                                        "type": "number"
+                                                    },
+                                                    "alias": {
+                                                        "type": "string"
+                                                    },
+                                                    "content": {
+                                                        "type": "string"
+                                                    },
+                                                    "summary": {
+                                                        "type": "string"
+                                                    },
+                                                    "images": {
+                                                        "type": "string"
+                                                    },
+                                                    "options": {
+                                                        "type": "string"
+                                                    },
+                                                    "product_type": {
+                                                        "type": "string"
+                                                    },
+                                                    "tags": {
+                                                        "type": "string"
+                                                    },
+                                                    "template_layout": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "vendor": {
+                                                        "type": "string"
+                                                    },
+                                                    "collections": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "brand": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "country": {
+                                                                "type": "string"
+                                                            },
+                                                            "src": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "name",
+                                                            "country",
+                                                            "src"
+                                                        ]
+                                                    },
+                                                    "published_on": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "created_on": {
+                                                        "type": "string"
+                                                    },
+                                                    "modified_on": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "grams",
+                                                    "barcode",
+                                                    "compare_at_price",
+                                                    "inventory_management",
+                                                    "inventory_policy",
+                                                    "inventory_quantity",
+                                                    "inventory_quantity_adjustment",
+                                                    "metafield",
+                                                    "option",
+                                                    "position",
+                                                    "price",
+                                                    "product_id",
+                                                    "requires_shipping",
+                                                    "sku",
+                                                    "title",
+                                                    "weight",
+                                                    "weight_unit",
+                                                    "image_id",
+                                                    "alias",
+                                                    "content",
+                                                    "summary",
+                                                    "images",
+                                                    "options",
+                                                    "product_type",
+                                                    "tags",
+                                                    "template_layout",
+                                                    "name",
+                                                    "vendor",
+                                                    "collections",
+                                                    "brand",
+                                                    "published_on",
+                                                    "created_on",
+                                                    "modified_on"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "getApiProducts",
+                "tags": [
+                    "Products"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "collection_id",
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "number"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "number",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "schema": {
+                            "type": "number",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "published",
+                        "schema": {
+                            "type": "boolean",
+                            "default": true
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sort",
+                        "schema": {
+                            "type": "string",
+                            "default": "published_on desc"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "vendor",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "product_type",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "category",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "description": "Get products based on a collection"
+            }
+        },
+        "/api/products/{id}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "grams": {
+                                                        "type": "number"
+                                                    },
+                                                    "barcode": {
+                                                        "type": "string"
+                                                    },
+                                                    "compare_at_price": {
+                                                        "type": "string"
+                                                    },
+                                                    "inventory_management": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "",
+                                                            "bizweb"
+                                                        ]
+                                                    },
+                                                    "inventory_policy": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "deny",
+                                                            "continue"
+                                                        ]
+                                                    },
+                                                    "inventory_quantity": {
+                                                        "type": "number"
+                                                    },
+                                                    "inventory_quantity_adjustment": {
+                                                        "type": "number"
+                                                    },
+                                                    "metafield": {
+                                                        "type": "string"
+                                                    },
+                                                    "option": {
+                                                        "type": "string"
+                                                    },
+                                                    "position": {
+                                                        "type": "number"
+                                                    },
+                                                    "price": {
+                                                        "type": "string"
+                                                    },
+                                                    "product_id": {
+                                                        "type": "number"
+                                                    },
+                                                    "requires_shipping": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "sku": {
+                                                        "type": "string"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    },
+                                                    "weight": {
+                                                        "type": "number"
+                                                    },
+                                                    "weight_unit": {
+                                                        "type": "string"
+                                                    },
+                                                    "image_id": {
+                                                        "type": "number"
+                                                    },
+                                                    "alias": {
+                                                        "type": "string"
+                                                    },
+                                                    "content": {
+                                                        "type": "string"
+                                                    },
+                                                    "summary": {
+                                                        "type": "string"
+                                                    },
+                                                    "images": {
+                                                        "type": "string"
+                                                    },
+                                                    "options": {
+                                                        "type": "string"
+                                                    },
+                                                    "product_type": {
+                                                        "type": "string"
+                                                    },
+                                                    "tags": {
+                                                        "type": "string"
+                                                    },
+                                                    "template_layout": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "vendor": {
+                                                        "type": "string"
+                                                    },
+                                                    "collections": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "brand": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "country": {
+                                                                "type": "string"
+                                                            },
+                                                            "src": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "name",
+                                                            "country",
+                                                            "src"
+                                                        ]
+                                                    },
+                                                    "published_on": {
+                                                        "type": [
+                                                            "string",
+                                                            "null"
+                                                        ]
+                                                    },
+                                                    "created_on": {
+                                                        "type": "string"
+                                                    },
+                                                    "modified_on": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "grams",
+                                                    "barcode",
+                                                    "compare_at_price",
+                                                    "inventory_management",
+                                                    "inventory_policy",
+                                                    "inventory_quantity",
+                                                    "inventory_quantity_adjustment",
+                                                    "metafield",
+                                                    "option",
+                                                    "position",
+                                                    "price",
+                                                    "product_id",
+                                                    "requires_shipping",
+                                                    "sku",
+                                                    "title",
+                                                    "weight",
+                                                    "weight_unit",
+                                                    "image_id",
+                                                    "alias",
+                                                    "content",
+                                                    "summary",
+                                                    "images",
+                                                    "options",
+                                                    "product_type",
+                                                    "tags",
+                                                    "template_layout",
+                                                    "name",
+                                                    "vendor",
+                                                    "collections",
+                                                    "brand",
+                                                    "published_on",
+                                                    "created_on",
+                                                    "modified_on"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No content"
+                    }
+                },
+                "operationId": "getApiProductsById",
+                "tags": [
+                    "Products"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "number"
+                                }
+                            ],
+                            "description": "The unique identifier for the product, which can be a string or a number.",
+                            "example": "test"
+                        },
+                        "required": true
+                    }
+                ],
+                "description": "Get products detail by id or alias"
+            }
+        },
+        "/api/categories": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "alias": {
+                                                        "type": "string"
+                                                    },
+                                                    "parent": {
+                                                        "type": "string"
+                                                    },
+                                                    "left": {
+                                                        "type": "number"
+                                                    },
+                                                    "right": {
+                                                        "type": "number"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "id",
+                                                    "name",
+                                                    "alias",
+                                                    "parent",
+                                                    "left",
+                                                    "right",
+                                                    "created_at"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "getApiCategories",
+                "tags": [
+                    "Category"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "level",
+                        "schema": {
+                            "type": "string",
+                            "default": "0"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "parent",
+                        "schema": {
+                            "type": "string",
+                            "default": "0"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "is_nested",
+                        "schema": {
+                            "type": "string",
+                            "default": "false"
+                        }
+                    }
+                ],
+                "description": "Get category tree or sub-tree by name"
+            }
+        }
+    }
+}

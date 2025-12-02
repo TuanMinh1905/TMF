@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .hover-effect-up {
+        @apply transition-all duration-100 ease-linear border-2 border-transparent hover:border-[#FED519] hover:-translate-y-1;
+    }
+
+    .hover-effect-right {
+        @apply transition-all duration-100 ease-linear border-2 border-transparent hover:border-[#FED519] hover:translate-x-[5px];
+    }
+
+    .hover-effect-0 {
+        @apply transition-all duration-100 ease-linear border-2 border-transparent hover:border-[#FED519] hover:translate-x-[0px];
+    }
+}

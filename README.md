@@ -72,3 +72,6 @@ Mở **http://localhost:5173/products** để CRUD.
 - Thêm `description`, `thumbnail` cho Product → migrate, sửa form.
 - Thêm search, filter theo brand/category.
 - Hiển thị lỗi validate từ BE (Zod) ở FE.
+
+## 5) Note công cụ
+- link kiếm font : https://icon-sets.iconify.design/?query=branch

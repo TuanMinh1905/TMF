@@ -1,19 +1,37 @@
+import { NextResponse } from "next/server";
+import { prisma } from "../../../lib/prisma";
 
-import { NextRequest } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { withCors, noContent } from '../_utils/cors';
-import { brandSchema } from '../_utils/schemas';
-export async function OPTIONS() { return noContent(204); }
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const q = searchParams.get('q') ?? undefined;
-  const brands = await prisma.brand.findMany({ where: q ? { name: { contains: q } } : undefined, orderBy: { name: 'asc' } });
-  return withCors(brands);
+const allowedOrigin = "http://localhost:4000"; // frontend-nuxt của bạn
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": allowedOrigin,
+  "Access-Control-Allow-Methods": "GET,OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+// Handle preflight request
+export function OPTIONS() {
+  return NextResponse.json(null, {
+    status: 204,
+    headers: corsHeaders,
+  });
 }
-export async function POST(req: NextRequest) {
-  const json = await req.json().catch(() => null);
-  const parsed = brandSchema.safeParse(json);
-  if (!parsed.success) return withCors({ error: parsed.error.format() }, 400);
-  const created = await prisma.brand.create({ data: parsed.data });
-  return withCors(created, 201);
+
+export async function GET() {
+  try {
+    // Lấy tất cả fields của brand (id, name, logoUrl, description)
+    const brands = await prisma.brand.findMany({
+      orderBy: { id: "asc" },
+    });
+
+    return NextResponse.json(brands, {
+      headers: corsHeaders,
+    });
+  } catch (err) {
+    console.error("Error fetching brands:", err);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500, headers: corsHeaders }
+    );
+  }
 }

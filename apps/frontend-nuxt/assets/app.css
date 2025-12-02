@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+    --font-sans: "Roboto", sans-serif;
+    --default-font-family: "Roboto", sans-serif;
+}
+
+@tailwind utilities;
+@layer utilities {
+    ::-webkit-scrollbar {
+        width: 20px; 
+        height: 20px;
+    }
+
+    ::-webkit-scrollbar-track {
+        border-radius: 100vh;
+        background: #f7f4ed;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #e0cbcb;
+        border-radius: 100vh;
+        border: 3px solid #f6f7ed;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #c0a0b9;
+    }
+}

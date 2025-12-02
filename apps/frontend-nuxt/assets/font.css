@@ -1,0 +1,70 @@
+/* Mona Sans ExtraLight */
+@font-face {
+    font-family: 'MonaSans';
+    src: url('~/assets/fonts/MonaSans-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+/* Mona Sans Light */
+@font-face {
+    font-family: 'MonaSans';
+    src: url('~/assets/fonts/MonaSans-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+/* Mona Sans Regular */
+@font-face {
+    font-family: 'MonaSans';
+    src: url('~/assets/fonts/MonaSans-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Mona Sans Medium */
+@font-face {
+    font-family: 'MonaSans';
+    src: url('~/assets/fonts/MonaSans-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* Mona Sans SemiBold */
+@font-face {
+    font-family: 'MonaSans';
+    src: url('~/assets/fonts/MonaSans-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+/* Mona Sans Bold */
+@font-face {
+    font-family: 'MonaSans';
+    src: url('~/assets/fonts/MonaSans-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* Mona Sans ExtraBold */
+@font-face {
+    font-family: 'MonaSans';
+    src: url('~/assets/fonts/MonaSans-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+/* Mona Sans Black */
+@font-face {
+    font-family: 'MonaSans';
+    src: url('~/assets/fonts/MonaSans-Black.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SVN-DKLongreach';
+    src: url('~/assets/fonts/SVN-DKLongreach.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}

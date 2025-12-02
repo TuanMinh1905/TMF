@@ -1,0 +1,84 @@
+<template>
+    <wrap>
+        <div class="relative">
+            <!-- Hình nền -->
+            <img src="/BarnerSlider.png" alt="banner" class="" />
+
+            <!-- Nội dung -->
+            <div class="absolute top-0 left-0 h-full w-full flex items-center justify-between px-[60px]">
+                <!-- Khối chữ và QR -->
+                <div class="flex flex-col gap-[24px] text-grayTMF">
+                    <div>
+                        <h1 class="font-Longreach text-[48px] leading-[100%] font-extrabold text-white">
+                            ĐỒ PET GÌ CŨNG CÓ
+                        </h1>
+                        <h2 class="font-Longreach text-[40px] leading-[100%] font-extrabold text-blackTMF mt-[8px]">
+                            MUA HẾT Ở TMF
+                        </h2>
+                    </div>
+
+                    <div class="flex items-center gap-[24px]">
+                        <img src="/QRDowload.png" alt="QR code" class="w-[100px] h-[100px]" />
+
+                        <div class="flexCol-center gap-[12px]">
+                            <span class="font-Longreach text-[20px] text-blackTMF">
+                                TẢI ỨNG DỤNG TMF NGAY!
+                            </span>
+
+                            <div class="flex gap-[10px]">
+                                <!-- Google Play -->
+                                <button
+                                    class="flex items-center gap-[10px] bg-buttonBarner px-[18px] py-[8px] rounded-[10px]">
+                                    <svg width="30" height="30" viewBox="0 0 36 37" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M2.10156 34.4047V3.5327C2.10176 3.46572 2.1212 3.4003 2.15744 3.34462C2.19367 3.28895 2.24509 3.24551 2.30525 3.21976C2.36541 3.194 2.43163 3.18708 2.4956 3.19984C2.55958 3.21261 2.61846 3.24451 2.66486 3.29154L18.3051 18.9679L2.66486 34.6459C2.61846 34.6929 2.55958 34.7248 2.4956 34.7376C2.43163 34.7504 2.36541 34.7434 2.30525 34.7177C2.24509 34.6919 2.19367 34.6485 2.15744 34.5928C2.1212 34.5372 2.10176 34.4717 2.10156 34.4047ZM24.8629 25.4094L5.25208 36.5139L5.23985 36.521C4.90202 36.7095 4.58101 36.2398 4.85769 35.9664L20.2304 20.8588L24.8629 25.4094ZM4.85922 1.96946C4.58101 1.69609 4.90202 1.22633 5.24138 1.41486L5.25361 1.42193L24.8629 12.5264L20.2304 17.0787L4.85922 1.96946ZM32.7797 20.9318L27.3034 24.0316L22.1542 18.9679L27.3034 13.9067L32.7797 17.0041C34.2694 17.8501 34.2694 20.0858 32.7797 20.9318Z"
+                                            fill="#414545" />
+                                    </svg>
+                                    <div class="flex flex-col items-start leading-[100%]">
+                                        <span class="text-[10px] font-normal font-monasans text-[#414545]">
+                                            Download on the
+                                        </span>
+                                        <span class="text-[13px] font-medium font-monasans text-[#414545]">
+                                            Google Play
+                                        </span>
+                                    </div>
+                                </button>
+
+                                <!-- App Store -->
+                                <button
+                                    class="flex items-center gap-[10px] bg-buttonBarner px-[18px] py-[8px] rounded-[10px]">
+                                    <svg width="30" height="30" viewBox="0 0 37 37" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M33.1975 27.0425C32.6546 28.8308 31.7985 30.6191 30.6292 32.4074C28.8336 35.2115 27.0449 36.6136 25.2631 36.6136C24.581 36.6136 23.6067 36.3847 22.3399 35.9268C21.1428 35.469 20.0919 35.2401 19.1871 35.2401C18.338 35.2401 17.3497 35.4762 16.2221 35.9483C15.0946 36.4347 14.1759 36.6779 13.466 36.6779C11.3502 36.6779 9.25522 34.8252 7.18116 31.1198C5.13493 27.3858 4.11182 23.7877 4.11182 20.3255C4.11182 17.0636 4.89829 14.3883 6.47124 12.2996C8.04419 10.2394 10.0208 9.20933 12.4011 9.20933C13.4034 9.20933 14.6353 9.42393 16.0969 9.85313C17.5445 10.2823 18.505 10.4969 18.9783 10.4969C19.6047 10.4969 20.6 10.2537 21.9641 9.76729C23.3839 9.28087 24.588 9.03765 25.5763 9.03765C27.2328 9.03765 28.7153 9.50262 30.0237 10.4325C30.7476 10.9476 31.4714 11.6629 32.1952 12.5785C31.0956 13.5371 30.3021 14.3812 29.8149 15.1108C28.9101 16.4556 28.4577 17.9363 28.4577 19.553C28.4577 21.327 28.938 22.9222 29.8985 24.3385C30.8589 25.7549 31.9586 26.6562 33.1975 27.0425ZM25.3466 1.87006C25.3466 2.74276 25.1448 3.71561 24.7411 4.7886C24.3235 5.8616 23.6763 6.84875 22.7993 7.75006C22.0476 8.52262 21.2959 9.03765 20.5443 9.29517C20.0292 9.45254 19.3054 9.57415 18.3728 9.65999C18.4145 7.52831 18.9574 5.68992 20.0014 4.14481C21.0315 2.61401 22.7715 1.55532 25.2214 0.96875C25.2353 1.01167 25.2527 1.09036 25.2736 1.20481C25.2944 1.31926 25.3118 1.39795 25.3258 1.44087C25.3258 1.49809 25.3292 1.56963 25.3362 1.65547C25.3432 1.7413 25.3466 1.81284 25.3466 1.87006Z"
+                                            fill="#414545" />
+                                    </svg>
+                                    <div class="flex flex-col items-start leading-[100%]">
+                                        <span class="text-[10px] font-normal font-monasans text-[#414545]">
+                                            Download on the
+                                        </span>
+                                        <span class="text-[13px] font-medium font-monasans text-[#414545]">
+                                            Apple Store
+                                        </span>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </wrap>
+
+</template>
+
+<style scoped>
+.text-grayTMF {
+    color: #414545;
+}
+
+.bg-buttonBarner {
+    background-color: #fff;
+}
+</style>

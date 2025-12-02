@@ -1,0 +1,11 @@
+@layer utilities {
+  .no-scrollbar {
+    /* Firefox */
+    scrollbar-width: none;
+    /* IE/Edge cũ */
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome/Edge/Safari */
+  }
+}

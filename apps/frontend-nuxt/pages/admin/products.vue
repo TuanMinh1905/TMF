@@ -1,4 +1,9 @@
 <script setup lang="ts">
+// Áp dụng middleware admin
+definePageMeta({
+  middleware: 'admin',
+})
+
 const config = useRuntimeConfig();
 const api = config.public.apiBase as string;
 
