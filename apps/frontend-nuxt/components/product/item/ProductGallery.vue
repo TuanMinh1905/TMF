@@ -15,20 +15,20 @@
     <button
       v-else
       class="flexRow-center relative aspect-square h-fit w-[450px] overflow-hidden bg-white"
-      @click="openPreview(mainImage || extractedVideoFrame || product.main_image, 'image')"
+      @click="openPreview(mainImage || extractedVideoFrame || product.imageUrl, 'image')"
     >
       <!-- Show extracted video frame as main image if no specific image selected -->
       <img
         v-if="!mainImage && extractedVideoFrame"
         :src="extractedVideoFrame"
-        :alt="product.title"
+        :alt="product.name"
         class="max-h-[80%] max-w-[80%] object-cover lg:max-h-[100%] lg:max-w-[100%]"
       />
       <!-- Show regular image -->
       <img
         v-else
-        :src="mainImage || product.main_image"
-        :alt="product.title"
+        :src="mainImage || product.imageUrl"
+        :alt="product.name"
         class="max-h-[80%] max-w-[80%] object-cover lg:max-h-[100%] lg:max-w-[100%]"
       />
     </button>
@@ -135,8 +135,8 @@ const extractVideoThumbnail = async () => {
 watch(
   () => props.product,
   (newProduct) => {
-    if (newProduct?.main_image) {
-      mainImage.value = newProduct.main_image
+    if (newProduct?.imageUrl) {
+      mainImage.value = newProduct.imageUrl
     }
     // Extract video frame when product changes
     if (newProduct?.video) {
@@ -163,7 +163,19 @@ function changeVideo() {
 }
 
 const start = ref(0) // vị trí đầu của 5 items
-const images = computed(() => props.product?.images ?? [])
+// images từ API là array {id, url, productId}, cần map lấy url
+const images = computed(() => {
+  const imgs = props.product?.images ?? []
+  // Nếu images là array objects thì map lấy url, nếu là array string thì giữ nguyên
+  if (imgs.length > 0 && typeof imgs[0] === 'object') {
+    return imgs.map((i: any) => i.url)
+  }
+  // Fallback: nếu không có images, dùng imageUrl
+  if (imgs.length === 0 && props.product?.imageUrl) {
+    return [props.product.imageUrl]
+  }
+  return imgs
+})
 const video = computed(() => props.product?.video)
 const hasVideo = computed(() => !!video.value?.trim?.())
 const VISIBLE = computed(() => (hasVideo.value ? 5 : 6))

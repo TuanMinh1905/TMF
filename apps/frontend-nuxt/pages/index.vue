@@ -65,8 +65,4 @@ productStore.getProducts()
 const products = computed(() => productStore.products)
 const productsLoading = computed(() => productStore.loading)
 
-watchEffect(() => {
-  console.log('All Brands on Home Page:', allBrand.value)
-})
-
 </script>

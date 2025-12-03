@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     },
     { path: '~/components/filter', prefix: 'Filter', pathPrefix: false },
     { path: '~/components/brand', prefix: 'Brand', pathPrefix: false },
+    { path: '~/components/introduce', prefix: 'Introduce', pathPrefix: false },
   ],
   
   imports: {

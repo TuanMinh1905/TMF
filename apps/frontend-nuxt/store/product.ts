@@ -8,9 +8,39 @@ interface ProductFilters {
   pageSize?: number
 }
 
+// Interface đúng với Prisma schema
+interface Product {
+  id: number
+  name: string
+  title?: string | null
+  alias: string
+  sku: string
+  price: number
+  compareAtPrice?: number | null
+  description?: string | null
+  imageUrl?: string | null
+  rating?: number | null
+  reviewCount?: number | null
+  stock?: number | null
+  isActive: boolean
+  categoryId: number
+  brandId: number
+  createdAt?: string
+  updatedAt?: string
+  category?: any
+  brand?: any
+  images?: { id: number; url: string; productId: number }[]
+  relatedProducts?: Product[]
+}
+
 export const useProductStorage = defineStore('productStorage', {
   state: () => ({
-    products: [] as any[],
+    products: [] as Product[],
+    // Chi tiết sản phẩm
+    currentProduct: null as Product | null,
+    relatedProducts: [] as Product[],
+    loadingDetail: false,
+    // List
     loading: false,
     error: null as string | null,
     total: 0,
@@ -18,6 +48,26 @@ export const useProductStorage = defineStore('productStorage', {
     pageSize: 20,
   }),
   actions: {
+    // Lấy chi tiết sản phẩm theo id hoặc slug (alias)
+    async getProductDetail(idOrSlug: string | number) {
+      this.loadingDetail = true
+      this.currentProduct = null
+      this.relatedProducts = []
+      
+      try {
+        const response = await clientAPI().get(`/products/${idOrSlug}`)
+        const data = response.data
+        
+        this.currentProduct = data
+        this.relatedProducts = data.relatedProducts || []
+      } catch (err: any) {
+        this.error = err.message
+        console.error('Error fetching product detail:', err)
+      } finally {
+        this.loadingDetail = false
+      }
+    },
+
     async getProducts(filters: ProductFilters = {}) {
       this.loading = true
       try {

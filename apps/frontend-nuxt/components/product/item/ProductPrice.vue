@@ -1,6 +1,6 @@
 // components/product/item/ProductPrice.vue
 <template>
-  <div v-if="isDesktop" class="mt-[30px] flex h-full w-full flex-col gap-[20px]">
+  <div class="mt-[30px] flex h-full w-full flex-col gap-[20px]">
     <!-- Title -->
     <div>
       <span class="font-monasans text-[24px] font-bold leading-[40px] text-grayPetpet">
@@ -60,7 +60,7 @@
         </span>
       </div>
       <span class="font-monasans text-[14px] font-normal leading-[150%]">
-        | Đã bán {{ product?.total_sell }}
+        | Đã bán {{ product?.reviewCount || 0 }}
       </span>
       <div class="flex gap-[6px]">
         <div>
@@ -104,7 +104,7 @@
         <!-- Giá Bán -->
         <div class="flex h-fit w-fit">
           <span class="font-monasans text-[32px] font-bold leading-[26px] text-textProduct">
-            {{ formatVNDWithComma(unit?.price) }}
+            {{ formatVNDWithComma(product?.price) }}
           </span>
           <span
             class="font-monasans text-[14px] font-bold leading-[32px] text-[#E95160] underline decoration-1 underline-offset-0">
@@ -112,9 +112,9 @@
           </span>
         </div>
         <!-- Giá Gạch -->
-        <div v-if="product?.price < product?.compare_at_price" class="h-[12px] w-fit">
+        <div v-if="product?.price < product?.compareAtPrice" class="h-[12px] w-fit">
           <span class="font-monasans text-[14px] font-medium leading-[32px] text-grayPetpet line-through">
-            {{ formatVNDWithComma(unit?.compare_at_price) }}
+            {{ formatVNDWithComma(product?.compareAtPrice) }}
           </span>
           <span
             class="font-monasans text-[10px] font-medium leading-[32px] text-grayPetpet underline decoration-1 underline-offset-0">
@@ -122,9 +122,9 @@
           </span>
         </div>
         <!-- Tag khuyến mãi -->
-        <div v-if="unit?.price < unit?.compare_at_price" class="ml-[3px]">
+        <div v-if="product?.price < product?.compareAtPrice" class="ml-[3px]">
           <span class="right-0 top-0 m-[4px] rounded-sm bg-primary p-[2px] text-[12px] font-bold text-[#FD6700]">
-            {{ (100 - (unit?.price / unit?.compare_at_price) * 100).toFixed(1) }}%
+            {{ (100 - (product?.price / product?.compareAtPrice) * 100).toFixed(1) }}%
           </span>
         </div>
       </div>
@@ -196,8 +196,6 @@ const props = defineProps({
 })
 
 const showPopup = ref(false);
-
-const isDesktop = useState<boolean>('ssrIsDesktop')
 
 // Đây là biến thể
 const units = computed(() => props.product?.units ?? [])

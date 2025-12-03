@@ -57,7 +57,7 @@
             v-for="(brand, index) in displayBrands"
             :key="brand.id"
             class="flex h-[152px] w-[211px] flex-shrink-0 flex-col justify-center overflow-hidden rounded-lg border-[2px] bg-white p-1 text-center shadow-sm"
-            :to="localePath(`/brand/${brand.id}`)"
+            :to="localePath(`/brand/${brand.slug}`)"
             :title="brand.description || ''"
           >
             <div class="flex h-[44px] w-full items-center justify-center overflow-hidden bg-white">

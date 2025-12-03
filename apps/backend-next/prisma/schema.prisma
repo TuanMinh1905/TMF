@@ -23,6 +23,7 @@ model Category {
 model Brand {
   id          Int       @id @default(autoincrement())
   name        String    @unique
+  slug        String?   @db.NVarChar(200)
   logoUrl     String?   @map("logo_url") @db.NVarChar(500)
   description String?
   products    Product[]

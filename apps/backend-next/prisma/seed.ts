@@ -3,6 +3,17 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
+// Helper function tạo slug từ tên
+function createSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Bỏ dấu tiếng Việt
+    .replace(/đ/g, 'd')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 async function main() {
   // Xóa dữ liệu cũ (theo thứ tự để tránh lỗi FK)
   await prisma.image.deleteMany({});
@@ -103,126 +114,151 @@ async function main() {
   const brands = [
     {
       name: 'Nike',
+      slug: 'nike',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/1200px-Logo_NIKE.svg.png',
       description: 'Nike là thương hiệu thể thao hàng đầu thế giới, nổi tiếng với slogan "Just Do It". Sản phẩm Nike kết hợp công nghệ tiên tiến và thiết kế thời trang.'
     },
     {
       name: 'Adidas',
+      slug: 'adidas',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/1200px-Adidas_Logo.svg.png',
       description: 'Adidas là thương hiệu thể thao Đức với biểu tượng 3 sọc đặc trưng. Adidas luôn tiên phong trong công nghệ giày và quần áo thể thao.'
     },
     {
       name: 'H&M',
+      slug: 'h-m',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/1200px-H%26M-Logo.svg.png',
       description: 'H&M là thương hiệu thời trang nhanh đến từ Thụy Điển, mang đến xu hướng mới nhất với giá cả phải chăng cho mọi người.'
     },
     {
       name: 'Zara',
+      slug: 'zara',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Zara_Logo.svg/1200px-Zara_Logo.svg.png',
       description: 'Zara là thương hiệu thời trang Tây Ban Nha thuộc tập đoàn Inditex, nổi tiếng với khả năng cập nhật xu hướng nhanh chóng từ sàn catwalk.'
     },
     {
       name: 'Calvin Klein',
+      slug: 'calvin-klein',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Calvin_Klein_logo.svg/1200px-Calvin_Klein_logo.svg.png',
       description: 'Calvin Klein là thương hiệu thời trang cao cấp Mỹ, nổi tiếng với phong cách tối giản, sang trọng và các dòng sản phẩm đồ lót, nước hoa.'
     },
     {
       name: 'Puma',
+      slug: 'puma',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Puma_logo.svg/1200px-Puma_logo.svg.png',
       description: 'Puma là thương hiệu thể thao Đức, nổi tiếng với thiết kế năng động và hợp tác với nhiều ngôi sao thể thao, âm nhạc hàng đầu.'
     },
     {
       name: 'Uniqlo',
+      slug: 'uniqlo',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/UNIQLO_logo.svg/1200px-UNIQLO_logo.svg.png',
       description: 'Uniqlo là thương hiệu thời trang Nhật Bản, nổi tiếng với quần áo cơ bản chất lượng cao, công nghệ vải tiên tiến như HeatTech và AIRism.'
     },
     {
       name: 'Gucci',
+      slug: 'gucci',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Gucci_logo.svg/1200px-Gucci_logo.svg.png',
       description: 'Gucci là thương hiệu xa xỉ Ý, biểu tượng của sự sang trọng và đẳng cấp với các thiết kế độc đáo, táo bạo.'
     },
     {
       name: 'Louis Vuitton',
+      slug: 'louis-vuitton',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Louis_Vuitton_logo_and_wordmark.svg/1200px-Louis_Vuitton_logo_and_wordmark.svg.png',
       description: 'Louis Vuitton là thương hiệu xa xỉ Pháp hàng đầu thế giới, nổi tiếng với túi xách, vali và phụ kiện cao cấp.'
     },
     {
       name: 'Levi\'s',
+      slug: 'levis',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Levis-logo.svg/1200px-Levis-logo.svg.png',
       description: 'Levi\'s là thương hiệu jeans lâu đời nhất thế giới từ Mỹ, biểu tượng của phong cách casual và bền bỉ.'
     },
     {
       name: 'Tommy Hilfiger',
+      slug: 'tommy-hilfiger',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Tommy_Hilfiger_logo.svg/1200px-Tommy_Hilfiger_logo.svg.png',
       description: 'Tommy Hilfiger là thương hiệu thời trang Mỹ với phong cách preppy cổ điển, kết hợp giữa sang trọng và năng động.'
     },
     {
       name: 'Ralph Lauren',
+      slug: 'ralph-lauren',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Ralph_Lauren_Logo.svg/1200px-Ralph_Lauren_Logo.svg.png',
       description: 'Ralph Lauren là thương hiệu thời trang cao cấp Mỹ, nổi tiếng với polo shirt và phong cách preppy thanh lịch.'
     },
     {
       name: 'The North Face',
+      slug: 'the-north-face',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/The_North_Face_logo.svg/1200px-The_North_Face_logo.svg.png',
       description: 'The North Face là thương hiệu đồ outdoor hàng đầu, chuyên về quần áo và thiết bị cho các hoạt động thể thao mạo hiểm.'
     },
     {
       name: 'Converse',
+      slug: 'converse',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Converse_logo.svg/1200px-Converse_logo.svg.png',
       description: 'Converse là thương hiệu giày Mỹ huyền thoại với mẫu Chuck Taylor All Star, biểu tượng của văn hóa đường phố.'
     },
     {
       name: 'Vans',
+      slug: 'vans',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Vans-logo.svg/1200px-Vans-logo.svg.png',
       description: 'Vans là thương hiệu giày skateboard từ California, gắn liền với văn hóa trượt ván và phong cách streetwear.'
     },
     {
       name: 'New Balance',
+      slug: 'new-balance',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/New_Balance_logo.svg/1200px-New_Balance_logo.svg.png',
       description: 'New Balance là thương hiệu giày thể thao Mỹ, nổi tiếng với sự thoải mái và chất lượng sản xuất tại Mỹ.'
     },
     {
       name: 'Under Armour',
+      slug: 'under-armour',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Under_armour_logo.svg/1200px-Under_armour_logo.svg.png',
       description: 'Under Armour là thương hiệu đồ thể thao Mỹ, chuyên về quần áo công nghệ cao cho vận động viên chuyên nghiệp.'
     },
     {
       name: 'Lacoste',
+      slug: 'lacoste',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Lacoste_logo.svg/1200px-Lacoste_logo.svg.png',
       description: 'Lacoste là thương hiệu thời trang Pháp với biểu tượng cá sấu, nổi tiếng với áo polo và phong cách thể thao thanh lịch.'
     },
     {
       name: 'Burberry',
+      slug: 'burberry',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Burberry_logo.svg/1200px-Burberry_logo.svg.png',
       description: 'Burberry là thương hiệu xa xỉ Anh Quốc, nổi tiếng với họa tiết kẻ sọc đặc trưng và áo trench coat huyền thoại.'
     },
     {
       name: 'Versace',
+      slug: 'versace',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Versace_logo.svg/1200px-Versace_logo.svg.png',
       description: 'Versace là thương hiệu thời trang xa xỉ Ý, nổi tiếng với thiết kế táo bạo, màu sắc rực rỡ và họa tiết Medusa.'
     },
     {
       name: 'Fila',
+      slug: 'fila',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Fila_logo.svg/1200px-Fila_logo.svg.png',
       description: 'Fila là thương hiệu thể thao Ý-Hàn, nổi tiếng với phong cách retro và giày chunky sneaker thời thượng.'
     },
     {
       name: 'Champion',
+      slug: 'champion',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Champion_Athleticwear_Logo.svg/1200px-Champion_Athleticwear_Logo.svg.png',
       description: 'Champion là thương hiệu đồ thể thao Mỹ lâu đời, nổi tiếng với áo hoodie và phong cách vintage streetwear.'
     },
     {
       name: 'Gap',
+      slug: 'gap',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Gap_logo.svg/1200px-Gap_logo.svg.png',
       description: 'Gap là thương hiệu thời trang Mỹ, chuyên về quần áo casual cơ bản với chất lượng tốt và giá cả hợp lý.'
     },
     {
       name: 'Mango',
+      slug: 'mango',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/MANGO_logo.svg/1200px-MANGO_logo.svg.png',
       description: 'Mango là thương hiệu thời trang Tây Ban Nha, nổi tiếng với thiết kế nữ tính, thanh lịch cho phụ nữ hiện đại.'
     },
     {
       name: 'Massimo Dutti',
+      slug: 'massimo-dutti',
       logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Massimo_Dutti_logo.svg/1200px-Massimo_Dutti_logo.svg.png',
       description: 'Massimo Dutti là thương hiệu thời trang cao cấp thuộc tập đoàn Inditex, chuyên về phong cách công sở sang trọng.'
     },
@@ -233,6 +269,7 @@ async function main() {
     const created = await prisma.brand.create({
       data: {
         name: brand.name,
+        slug: brand.slug,
         logoUrl: brand.logoUrl,
         description: brand.description,
       }
