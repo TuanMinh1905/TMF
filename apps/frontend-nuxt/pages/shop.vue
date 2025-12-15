@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const config = useRuntimeConfig();
 const api = config.public.apiBase as string;
+const route = useRoute();
 
 type Category = { id:number; name:string };
 type Brand = { id:number; name:string };
@@ -8,6 +9,8 @@ type Product = {
   id:number; name:string; sku:string; price:number;
   categoryId:number; brandId:number;
   category?: Category; brand?: Brand;
+  imageUrl?: string;
+  slug?: string;
 };
 
 const categories = ref<Category[]>([]);
@@ -17,6 +20,7 @@ const loading = ref(false);
 const selectedCategory = ref<number | null>(null);
 const selectedBrand = ref<number | null>(null);
 const cart = ref<Map<number, number>>(new Map());
+const searchQuery = computed(() => route.query.q as string || '');
 
 async function fetchRefs() {
   const [cats, brs] = await Promise.all([
@@ -29,17 +33,25 @@ async function fetchRefs() {
 
 async function fetchProducts() {
   loading.value = true;
-  const res = await $fetch<{items:Product[]}>(`${api}/products`);
+  const params: any = {};
+  
+  if (searchQuery.value) {
+    params.q = searchQuery.value;
+  }
+  if (selectedCategory.value) {
+    params.categoryId = selectedCategory.value;
+  }
+  if (selectedBrand.value) {
+    params.brandId = selectedBrand.value;
+  }
+  
+  const res = await $fetch<{items:Product[]}>(`${api}/products`, { params });
   products.value = res.items;
   loading.value = false;
 }
 
 function getFilteredProducts() {
-  return products.value.filter(p => {
-    const matchCategory = !selectedCategory.value || p.categoryId === selectedCategory.value;
-    const matchBrand = !selectedBrand.value || p.brandId === selectedBrand.value;
-    return matchCategory && matchBrand;
-  });
+  return products.value;
 }
 
 function addToCart(product: Product) {
@@ -59,6 +71,15 @@ function getCartTotal() {
   });
   return total;
 }
+
+// Watch for query changes
+watch(() => route.query.q, () => {
+  fetchProducts();
+});
+
+watch([selectedCategory, selectedBrand], () => {
+  fetchProducts();
+});
 
 onMounted(async () => {
   await fetchRefs();
@@ -133,21 +154,44 @@ onMounted(async () => {
 
         <!-- Products Grid -->
         <div class="md:col-span-3">
-          <div class="mb-4 flex justify-between items-center">
-            <h2 class="text-2xl font-bold">Sản phẩm</h2>
-            <span v-if="loading" class="text-gray-500">Đang tải...</span>
-            <span v-else class="text-gray-600 text-sm">{{ getFilteredProducts().length }} sản phẩm</span>
+          <div class="mb-4">
+            <div class="flex justify-between items-center mb-2">
+              <h2 class="text-2xl font-bold">
+                {{ searchQuery ? `Kết quả tìm kiếm: "${searchQuery}"` : 'Sản phẩm' }}
+              </h2>
+              <span v-if="loading" class="text-gray-500">Đang tải...</span>
+              <span v-else class="text-gray-600 text-sm">{{ getFilteredProducts().length }} sản phẩm</span>
+            </div>
+            
+            <!-- Clear search button -->
+            <NuxtLink
+              v-if="searchQuery"
+              to="/shop"
+              class="text-blue-600 text-sm hover:underline"
+            >
+              ← Xóa tìm kiếm
+            </NuxtLink>
           </div>
 
           <div v-if="getFilteredProducts().length === 0" class="bg-white rounded shadow p-8 text-center">
-            <p class="text-gray-600">Không có sản phẩm nào phù hợp với bộ lọc của bạn.</p>
+            <p class="text-gray-600">
+              {{ searchQuery ? `Không tìm thấy sản phẩm nào cho "${searchQuery}"` : 'Không có sản phẩm nào phù hợp với bộ lọc của bạn.' }}
+            </p>
           </div>
 
           <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div v-for="product in getFilteredProducts()" :key="product.id" class="bg-white rounded shadow hover:shadow-lg transition">
-              <div class="bg-gray-200 h-48 flex items-center justify-center">
-                <span class="text-gray-500">Ảnh sản phẩm</span>
-              </div>
+              <NuxtLink :to="`/p/${product.slug || product.id}`">
+                <div class="bg-gray-200 h-48 flex items-center justify-center overflow-hidden">
+                  <img
+                    v-if="product.imageUrl"
+                    :src="product.imageUrl"
+                    :alt="product.name"
+                    class="w-full h-full object-cover"
+                  >
+                  <span v-else class="text-gray-500">Ảnh sản phẩm</span>
+                </div>
+              </NuxtLink>
               <div class="p-4">
                 <h3 class="font-semibold text-lg mb-1">{{ product.name }}</h3>
                 <p class="text-sm text-gray-600 mb-2">SKU: {{ product.sku }}</p>

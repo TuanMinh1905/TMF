@@ -14,9 +14,20 @@ export async function GET(req: NextRequest) {
   const skip = (page - 1) * pageSize;
   const categoryId = searchParams.get('categoryId');
   const brandId = searchParams.get('brandId');
+  const searchQuery = searchParams.get('q') || searchParams.get('search');
 
   // Build where clause
   let where: any = {};
+
+  // Search theo tên hoặc SKU
+  if (searchQuery) {
+    where.OR = [
+      { name: { contains: searchQuery } },
+      { title: { contains: searchQuery } },
+      { sku: { contains: searchQuery } },
+      { description: { contains: searchQuery } },
+    ];
+  }
 
   // Filter theo categoryId
   if (categoryId) {

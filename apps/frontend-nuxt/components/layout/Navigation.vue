@@ -38,13 +38,61 @@
           </div>
 
           <input
-            ref="inputRef"
+            v-model="searchQuery"
             type="text"
             placeholder="Tìm Hoddie cho mùa đông"
             class="absolute left-[61px] top-[10px] w-[75%] text-[16px] leading-[160%] text-grayTMF focus:outline-none"
+            @input="handleSearch"
+            @keydown.enter="submitSearch"
+            @focus="showDropdown = true"
           >
 
+          <!-- Search Icon Button -->
+          <button
+            @click="submitSearch"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-grayTMF hover:text-gray-900"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
 
+          <!-- Dropdown Autocomplete -->
+          <div
+            v-if="showDropdown && (searchResults.length > 0 || searchLoading)"
+            class="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-primary rounded-lg shadow-lg max-h-[400px] overflow-y-auto z-50"
+          >
+            <!-- Loading -->
+            <div v-if="searchLoading" class="p-4 text-center text-gray-500">
+              Đang tìm kiếm...
+            </div>
+
+            <!-- Results -->
+            <div v-else-if="searchResults.length > 0" class="py-2">
+              <NuxtLink
+                v-for="product in searchResults"
+                :key="product.id"
+                :to="`/p/${product.slug || product.id}`"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 transition"
+                @click="closeDropdown"
+              >
+                <img
+                  :src="product.imageUrl || '/placeholder.png'"
+                  :alt="product.name"
+                  class="w-12 h-12 object-cover rounded"
+                >
+                <div class="flex-1">
+                  <p class="font-medium text-grayTMF">{{ product.name }}</p>
+                  <p class="text-sm text-gray-500">{{ formatPrice(product.price) }}</p>
+                </div>
+              </NuxtLink>
+            </div>
+
+            <!-- No Results -->
+            <div v-else class="p-4 text-center text-gray-500">
+              Không tìm thấy sản phẩm
+            </div>
+          </div>
         </div>
 
         <!-- Cart Icon -->
@@ -127,23 +175,106 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { useI18n, useLocalePath, useRoute } from '#imports'
+import { useI18n, useLocalePath, useRoute, useRouter } from '#imports'
 import { useCartStore } from '~/store/cart'
 import { useAuthStore } from '~/store/auth'
 
 const { t } = useI18n()
 const localePath = useLocalePath()
 const route = useRoute()
+const router = useRouter()
 const fullURL = computed(() => route.fullPath)
 const cartStore = useCartStore()
 const authStore = useAuthStore()
+const config = useRuntimeConfig()
+
+// Search state
+const searchQuery = ref('')
+const searchResults = ref<any[]>([])
+const searchLoading = ref(false)
+const showDropdown = ref(false)
+let searchTimeout: NodeJS.Timeout | null = null
 
 // Fetch cart khi đã login
 onMounted(() => {
   if (authStore.isLoggedIn) {
     cartStore.fetchCart()
   }
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', handleClickOutside)
 })
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+  if (searchTimeout) clearTimeout(searchTimeout)
+})
+
+function handleClickOutside(event: MouseEvent) {
+  const target = event.target as HTMLElement
+  if (!target.closest('.search-container')) {
+    showDropdown.value = false
+  }
+}
+
+// Debounced search
+async function handleSearch() {
+  if (searchTimeout) clearTimeout(searchTimeout)
+
+  if (!searchQuery.value.trim()) {
+    searchResults.value = []
+    showDropdown.value = false
+    return
+  }
+
+  searchLoading.value = true
+  showDropdown.value = true
+
+  searchTimeout = setTimeout(async () => {
+    try {
+      const response = await $fetch<any>(`${config.public.apiBase}/products`, {
+        params: {
+          q: searchQuery.value,
+          pageSize: 8
+        }
+      })
+      searchResults.value = response.items || []
+    } catch (error) {
+      console.error('Search error:', error)
+      searchResults.value = []
+    } finally {
+      searchLoading.value = false
+    }
+  }, 300)
+}
+
+// Submit search (navigate to products page)
+function submitSearch() {
+  if (searchQuery.value.trim()) {
+    closeDropdown()
+    router.push({
+      path: '/shop',
+      query: { q: searchQuery.value }
+    })
+  }
+}
+
+function closeDropdown() {
+  showDropdown.value = false
+}
+
+function formatPrice(price: number) {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND'
+  }).format(price)
+}
+
+// Helper function to get URL segment
+function getSegment(url: string, index: number) {
+  const segments = url.split('/').filter(s => s)
+  return segments[index] || ''
+}
 
 // Watch login state để fetch cart
 watch(() => authStore.isLoggedIn, (isLoggedIn) => {
