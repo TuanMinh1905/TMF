@@ -7,7 +7,8 @@
     "dev": "next dev -p 3000",
     "build": "prisma generate && next build",
     "start": "next start -p 3000",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "update-brand-slugs": "tsx prisma/update-brand-slugs.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

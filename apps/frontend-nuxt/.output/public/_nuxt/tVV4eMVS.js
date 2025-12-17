@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./WpxNJP_b.js","./BQvNquOl.js","./entry.U0UNLiBq.css","./Cd1hnxVn.js"])))=>i.map(i=>d[i]);
+import{V as s,W as a,_ as n,S as r}from"./BQvNquOl.js";const d=s(async(u,_)=>{let e,o;const{useAuthStore:i}=([e,o]=a(()=>n(()=>import("./WpxNJP_b.js"),__vite__mapDeps([0,1,2,3]),import.meta.url)),e=await e,o(),e),t=i();if(!t.user&&t.accessToken&&([e,o]=a(()=>t.fetchMe()),await e,o()),!t.isLoggedIn)return r("/login");if(!t.isAdmin)return r("/")});export{d as default};
