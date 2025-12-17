@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
   ],
 
-  ssr: true,
+  ssr: false, // tắt đi để build web tĩnh, build ssr tốn xiền :v
 
   components: [
     { path: "~/components", pathPrefix: false },

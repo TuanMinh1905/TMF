@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
 
-const allowedOrigin = "http://localhost:4000"; // frontend-nuxt của bạn
+const allowedOrigin = "http://localhost:4000"; 
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": allowedOrigin,
@@ -9,7 +9,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-// Handle preflight request
+
 export function OPTIONS() {
   return NextResponse.json(null, {
     status: 204,
@@ -19,7 +19,6 @@ export function OPTIONS() {
 
 export async function GET() {
   try {
-    // Lấy tất cả fields của brand (id, name, logoUrl, description)
     const brands = await prisma.brand.findMany({
       orderBy: { id: "asc" },
     });
