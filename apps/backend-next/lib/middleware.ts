@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { getUserFromRequest, isAdmin, JWTPayload } from '@/lib/auth';
-import { withCors } from '../api/_utils/cors';
+import { withCors } from '@/app/api/_utils/cors'
 
 // Helper để check auth và trả về user hoặc error response
 export function requireAuth(req: NextRequest): { user: JWTPayload } | { error: Response } {
