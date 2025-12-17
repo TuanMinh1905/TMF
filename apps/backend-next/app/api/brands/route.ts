@@ -1,20 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
-
-const allowedOrigin = "http://localhost:4000"; 
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": allowedOrigin,
-  "Access-Control-Allow-Methods": "GET,OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
-};
-
+import { corsHeaders, noContent } from "../_utils/cors";
 
 export function OPTIONS() {
-  return NextResponse.json(null, {
-    status: 204,
-    headers: corsHeaders,
-  });
+  return noContent();
 }
 
 export async function GET() {

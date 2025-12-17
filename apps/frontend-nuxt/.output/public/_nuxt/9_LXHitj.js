@@ -1,0 +1,1 @@
+import{u as r}from"./DlAjeTVY.js";import{q as o,c as t,o as a}from"./DVDgGvrL.js";import"./Cd1hnxVn.js";const d={__name:"introduce",setup(n){const e=r();return e.getBrand(),o(()=>e.brands),(c,s)=>(a(),t("div",null," Hello "))}};export{d as default};
